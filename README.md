@@ -20,6 +20,7 @@ YOUTUBE_KEY={Your YouTube API key}
 CLIENT_ID={Your YouTube OAuth2 Client ID}
 CLIENT_SECRET={Your YouTube OAuth2 Client Secret}
 ```
+You'll need to go to cloud.google.com and enable the YouTube Data API where you can then generate these values. 
 
 Note: the permissions scope required is `https://www.googleapis.com/auth/youtube.force-ssl` 
 
