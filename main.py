@@ -13,7 +13,7 @@ client_secret = os.getenv("CLIENT_SECRET")
 yt = youtube(youtube_key, client_id, client_secret)
 
 print("=== The YouTube Subtitle Game ===")
-print("Enter video ID at prompt, null for finished")
+print("Enter YouTube URL at prompt, null for finished")
 
 # TODO: strip ID from the URL
 
@@ -31,7 +31,10 @@ while True:
             print("Not a valid YouTube URL")
             continue
     else:
+        print("\n")
         break
+
+print("Thinking...")
 
 phrases = []
 
@@ -46,6 +49,7 @@ for file in subtitles:
 
     phrases.extend(local_phrases)
 
+print("Phrases for you to try: \n")
 # Sort the phrases again by frequency, across all videos
 for item in sorted(phrases, key=lambda x: x[1], reverse=True):
     print(item)
