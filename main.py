@@ -1,5 +1,6 @@
 from dotenv import load_dotenv, find_dotenv
 from youtube import youtube
+from subtitle import subtitle
 import os
 
 # Setup the YouTube class
@@ -15,4 +16,10 @@ print("=== The YouTube Subtitle Game ===")
 
 url = "D8-8r0wNgiY"
 
-yt.get_subtitles(url)
+#subtitles = yt.get_subtitles(url)
+
+subtitles = ["tmp/D8-8r0wNgiY.l5s234BevlVgiCy9mXQHACIa8X5w8gZkfc67osYzd0o="]
+
+for file in subtitles:
+    st = subtitle(file)
+    print(st.get_all_text())
