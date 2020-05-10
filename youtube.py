@@ -73,8 +73,6 @@ class youtube:
         r = requests.get("https://www.googleapis.com/youtube/v3/captions/{}".format(subtitle_id), params={"key": self._key}, headers=self._authorization_header)
         filename = "tmp/{}.{}".format(video_id, subtitle_id)
 
-        print(r.url)
-
         with open(filename, "wb") as fd:
             for chunk in r.iter_content(chunk_size=128):
                 fd.write(chunk)
@@ -90,7 +88,7 @@ class youtube:
         if(self._token == None):
             return False
         
-        if(self._token['expires'] < time.time()):
+        if(self._token['expires_at'] < time.time()):
             return False
 
         return True
@@ -104,7 +102,7 @@ class youtube:
         - Pass on the auth URL 
         - Take the redirect URL and then grab the token 
         - Set the token in the class and write the JSON to `tmp/oauth` for later
-        
+
         :returns: Boolean success factor
         """
         scope = ['https://www.googleapis.com/auth/youtube.force-ssl']
