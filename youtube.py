@@ -56,9 +56,11 @@ class youtube:
         r = requests.get("https://www.googleapis.com/youtube/v3/captions/", params={"key": self._key, "videoId": video_id, "part": "id"})
 
         ids = []
+        data = r.json()
 
-        for track in r.json()['items']:
-            ids.append(track['id'])
+        if("items" in data):
+            for track in data["items"]:
+                ids.append(track["id"])
         
         return ids
 
