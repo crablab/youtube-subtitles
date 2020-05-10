@@ -25,8 +25,17 @@ while True:
     if(url):
         up = urlparse(url)
         params = parse_qsl(up.query)
+
+        # Check the URL parameter exists
         if("v" in params[0]):
-            subtitles.extend(yt.get_subtitles(params[0][1]))
+            # Get the subtitles list 
+            local_subtitles = yt.get_subtitles(params[0][1])
+
+            # If it's empty, print an error
+            if(len(local_subtitles) == 0):
+                print("Hmm, no subtitles could be extracted")
+            else:
+                subtitles.extend()
         else:
             print("Not a valid YouTube URL")
             continue

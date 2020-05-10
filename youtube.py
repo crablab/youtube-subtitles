@@ -38,7 +38,9 @@ class youtube:
         subtitle_files = []
 
         for track in tracks:
-            subtitle_files.append(self._get_track(video_id, track))
+            filename = self._get_track(video_id, track)
+            if(filename):
+                subtitle_files.append(filename)
         
         return subtitle_files
 
@@ -64,20 +66,25 @@ class youtube:
         """
         Downloads the subtitle file for a given track. Saved in `tmp` with the format `video_id.track_id`. 
         Requires OAuth (groan) and will initiate that if required.
+
+        :returns: Filename of the subtitle track, False on failure.
         """
 
         # Get OAuth if needed
-        if(self._check_oauth() == False):
+        if(not self._check_oauth()):
             self._get_access_token()
 
         r = requests.get("https://www.googleapis.com/youtube/v3/captions/{}".format(subtitle_id), params={"key": self._key}, headers=self._authorization_header)
         filename = "tmp/{}.{}".format(video_id, subtitle_id)
 
-        with open(filename, "wb") as fd:
-            for chunk in r.iter_content(chunk_size=128):
-                fd.write(chunk)
+        if(r.status_code == 200):
+            with open(filename, "wb") as fd:
+                for chunk in r.iter_content(chunk_size=128):
+                    fd.write(chunk)
 
-        return filename
+            return filename
+        else:
+            return False
 
     def _check_oauth(self):
         """
@@ -85,10 +92,17 @@ class youtube:
 
         :returns: Boolean success factor
         """
+
+        # Is the property empty
         if(self._token == None):
             return False
         
-        if(self._token['expires_at'] < time.time()):
+        # Are the items we need there
+        if("access_token" in self._token and "expires_at" in self._token):
+            # Has the token expired
+            if(self._token['expires_at'] < time.time()):
+                return False
+        else:
             return False
 
         return True
